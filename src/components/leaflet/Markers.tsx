@@ -5,19 +5,33 @@ import { AnyAction, Dispatch } from 'redux';
 import { getAllComplaint } from '../../redux/actions-creators/Complaint_action';
 import IconWarning from './IconWarning';
 
+//Mui
+
+import Card from '@mui/material/Card';
+import CardActions from '@mui/material/CardActions';
+import CardContent from '@mui/material/CardContent';
+// import CardMedia from '@mui/material/CardMedia';
+import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
+
 
 type Props = {
   getAllComplaint: () => any,
-  getAllComplaintState:any
+  getAllComplaintState:any,
+  refreshMap:number,
+  setRefreshMap:React.Dispatch<React.SetStateAction<number>>
 }
 
 const Markers: React.FC<Props> = (props) => {
-  const {getAllComplaint,getAllComplaintState} = props;
+  const {getAllComplaint,getAllComplaintState,refreshMap,setRefreshMap} = props;
 
   useEffect(() => {
-    if(Object.keys(getAllComplaintState.complaint).length === 0){
+    console.log(refreshMap)
+    if(refreshMap === 0){
       getAllComplaint();
+      
     }  
+    setRefreshMap(1);
   });
 
   return (
@@ -25,24 +39,57 @@ const Markers: React.FC<Props> = (props) => {
       {getAllComplaintState.complaint.denuncias && getAllComplaintState.complaint.denuncias.map((denuncia:any,index:number)=>(
         <Marker position={[denuncia.ubicacion.coordenadas.longitud, denuncia.ubicacion.coordenadas.latitud]} icon={IconWarning} key={index}>
           <Popup>
-              <ul>
-                <li>
-                  <h3>Ubicacion</h3>
-                  <p>{denuncia.ubicacion.coordenadas.latitud}</p>
-                  <p>{denuncia.ubicacion.coordenadas.longitud}</p>
-                  <p>{denuncia.ubicacion.departamento}</p>
-                  <p>{denuncia.ubicacion.ciudad}</p>
-                  <h3>denuncia</h3>
-                  <p>{denuncia.denuncia.titulo}</p>
-                  <p>{denuncia.denuncia.descripcion}</p>
-                  <p>{denuncia.denuncia.fechaCreacion}</p>
-                  <p>{denuncia.denuncia.fechaUltimaActualizacion}</p>
-                  <p>{denuncia.denuncia.estado}</p>
-                  <h3>piraguero</h3>
-                  <p>{denuncia.piraguero.nombre}</p>
-                  <button>Hola</button>
-                </li>
-              </ul>
+          <Card sx={{ maxWidth: 345 }}>
+            {/* <CardMedia
+              component="img"
+              height="140"
+              image="/static/images/cards/contemplative-reptile.jpg"
+              alt="green iguana"
+            /> */}
+            <CardContent>
+              <Typography gutterBottom variant="h5" component="div">
+                Ubicacion
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                Departamento:{denuncia.ubicacion.departamento}
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                Ciudad: {denuncia.ubicacion.ciudad}
+              </Typography>
+              <Typography gutterBottom variant="h5" component="div">
+                Denuncia  
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                Titulo: {denuncia.denuncia.titulo}
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                Fecha de generacion de la denuncia: {denuncia.denuncia.fechaCreacion.slice(0,10)}
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                Fecha ultima actualizacion de denuncia: {denuncia.denuncia.fechaUltimaActualizacion.slice(0,10)}
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                Descripcion: {denuncia.denuncia.descripcion}
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                Estado: {denuncia.denuncia.estado}
+              </Typography>
+              <Typography gutterBottom variant="h5" component="div">
+                Piraguero
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                Praguero denunciante: {denuncia.piraguero.nombre}
+              </Typography>
+              {denuncia.denuncia.warning && 
+              <Typography variant="body2" color="text.secondary">
+                Cuidado: {denuncia.denuncia.warning.message}
+              </Typography>}
+            </CardContent>
+            <CardActions>
+              <Button size="small">Share</Button>
+              <Button size="small">Learn More</Button>
+            </CardActions>
+          </Card>
           </Popup>
         </Marker>))}
    </Fragment>

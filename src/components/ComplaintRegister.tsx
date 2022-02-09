@@ -19,7 +19,9 @@ type Props = {
     auth:any,
     address:any,
     openstreetmap:number,
-    setOpenstreetmap:React.Dispatch<React.SetStateAction<number>>
+    setOpenstreetmap:React.Dispatch<React.SetStateAction<number>>,
+    setRefreshMap:React.Dispatch<React.SetStateAction<number>>,
+    setOpen:React.Dispatch<React.SetStateAction<boolean>>,
 }
 
 interface IComplaint {
@@ -45,7 +47,7 @@ const style = {
 
 const ComplaintRegister: React.FC<Props> = (props) => {
 
-    const {registerComplaint,getAddress,longitud,latitud,auth,address,openstreetmap,setOpenstreetmap} = props;
+    const {registerComplaint,getAddress,longitud,latitud,auth,address,openstreetmap,setOpenstreetmap,setRefreshMap,setOpen} = props;
 
     const [complaint,setNewComplaint] = useState<IComplaint>({departamento:'',ciudad:'',titulo:'',descripcion:''})
    
@@ -53,12 +55,14 @@ const ComplaintRegister: React.FC<Props> = (props) => {
     useEffect(() => {
         if(longitud && latitud && openstreetmap === 0){
             getAddress(latitud,longitud);
+            // console.log(address.address.address.state,address.address.address.county)
         }  
         setOpenstreetmap(1);
     });
 
     
     const handleComplaint = (e: React.ChangeEvent<HTMLInputElement>) =>{
+        
         const nameInput = e.target.name;
         let value;
         value = e.target.type === 'checkbox' ? e.target.checked : e.target.value;
@@ -80,19 +84,22 @@ const ComplaintRegister: React.FC<Props> = (props) => {
                         longitud:longitud,
                         altitud:""
                     },
-                    departamento:address.address.state,
-                    ciudad:address.address.county
+                    departamento:address.address.address.state,
+                    ciudad:address.address.address.county
                 },
                 denuncia:{
                     titulo:complaint.titulo,
                     descripcion:complaint.descripcion
                 },
                 piraguero:{
-                    nombre:"victor",
-                    id:"61ee3855632f4b6799bac8b9"
+                    nombre:auth.user.user.nombre,
+                    id:auth.user.user._id
                 }
             }
             registerComplaint(newComplaint,token);
+            setRefreshMap(0);
+            setOpen(false);
+            
         }
         
     }
@@ -112,11 +119,13 @@ const ComplaintRegister: React.FC<Props> = (props) => {
                         <TextField  required type="text" fullWidth onChange={handleComplaint} id='ciudad' name='ciudad'  label="Ciudad" variant="outlined" value={complaint.ciudad}/>
                     </Grid> */}
                     <Grid item xs={12} sm={12}>
-                        <TextField  required type="text" fullWidth onChange={handleComplaint} id='titulo' name='titulo' label="Titulo" variant="outlined" value={complaint.titulo}/>
-                    </Grid>   
+                        <TextField  required type="text" fullWidth onChange={handleComplaint} id='titulo' name='titulo' label="Titulo" variant="filled" value={complaint.titulo}/>
+                    </Grid>  
+                    <br /> 
                     <Grid item xs={12} sm={12}>
-                        <TextField  required type="text" fullWidth onChange={handleComplaint} id='descripcion' name='descripcion' label="Descripcion" variant="outlined" value={complaint.descripcion}/>       
+                        <TextField  required type="text" multiline rows={4} fullWidth onChange={handleComplaint} id='descripcion' name='descripcion' label="Descripcion" variant="filled" value={complaint.descripcion}/>       
                     </Grid>
+                    <br />
                     <Grid item xs={12} sm={12}>
                         <Button type='submit' fullWidth variant="outlined">Enviar</Button>
                     </Grid>
