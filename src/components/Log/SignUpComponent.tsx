@@ -13,10 +13,21 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import Select from '@mui/material/Select';
+import { CircularProgress } from '@mui/material';
 
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { connect } from 'react-redux';
+import { Dispatch,AnyAction } from 'redux';
+import { signUp } from '../../redux/actions-creators/Login_action';
+import {useHistory} from 'react-router-dom';
 
 const theme = createTheme();
+
+type Props = {
+  auth:any,
+  signUp: (logOn:any,history:any) => any,
+}
+
 
 interface IRegister {
   nombre:string,
@@ -29,10 +40,10 @@ interface IRegister {
   password:string
 }
 
-const SignUpComponent = () => {
-
+const SignUpComponent:React.FC<Props>  = (props) => {
+    const {signUp,auth} = props;
     const[register,setRegister] = React.useState<IRegister>({nombre:'',fechaNacimiento:new Date(),tipo:'',tipoDocumento:'',numeroDocumento:'',ubicacion:'',email:'',password:''});
-
+    const history = useHistory();
 
     const handleRegister = (e: React.ChangeEvent<HTMLInputElement>) =>{
         
@@ -47,9 +58,8 @@ const SignUpComponent = () => {
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         if (register.nombre !== '' && register.fechaNacimiento !== null  && register.tipo !== '' && register.tipoDocumento !== '' && register.numeroDocumento !== '' && register.ubicacion !== '' && register.email !== '' && register.password !== '') {
-          
+          signUp(register,history);
         }
-        console.log(register);
       };
     
       return (
@@ -62,11 +72,11 @@ const SignUpComponent = () => {
             sm={4}
             md={7}
             sx={{
-              backgroundImage: 'url(https://images.unsplash.com/photo-1640975532489-a21f4e352ac5?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxfDB8MXxyYW5kb218MHx8fHx8fHx8MTY0MzY2ODgwNQ&ixlib=rb-1.2.1&q=80&w=1080)',
+              backgroundImage: 'url(https://oab.ambientebogota.gov.co/wp-content/uploads/2021/06/Icono-3C.png)',
               backgroundRepeat: 'no-repeat',
               backgroundColor: (t) =>
                 t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900],
-              backgroundSize: 'cover',
+              backgroundSize: 'contain',
               backgroundPosition: 'center',
             }}
           />
@@ -83,7 +93,7 @@ const SignUpComponent = () => {
                 <LockOutlinedIcon />
                 </Avatar>
                 <Typography component="h1" variant="h5">
-                Sign up
+                Registrarse
                 </Typography>
                 <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
                     <TextField
@@ -199,12 +209,12 @@ const SignUpComponent = () => {
                         variant="contained"
                         sx={{ mt: 3, mb: 2 }}
                     >
-                        Sign up
+                        {auth.isLoading ?<CircularProgress color="secondary"/> : "Registrarse"}
                     </Button>
                     <Grid container>
                         <Grid item>
                             <Link to="/ingresar">
-                                Already have an account? Sign in
+                                ¿Ya tienes una cuenta? Ingresar
                             </Link>
                         </Grid>
                     </Grid>
@@ -216,4 +226,19 @@ const SignUpComponent = () => {
       );
 };
 
-export default SignUpComponent;
+const mapStatetoProps = (state:any) =>{
+  return{
+    auth:state.loggin
+  }
+}
+
+
+const mapDispatchToProps = (dispatch:Dispatch<AnyAction>) =>{
+  return {
+      signUp:(logOn:any,history:any) => {
+          dispatch<any>(signUp(logOn,history));
+      },
+  }
+}
+
+export default connect(mapStatetoProps,mapDispatchToProps)(SignUpComponent);

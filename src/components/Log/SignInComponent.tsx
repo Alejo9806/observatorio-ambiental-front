@@ -9,6 +9,8 @@ import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
+import { CircularProgress } from '@mui/material';
+
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { connect } from 'react-redux';
 import { signIn } from '../../redux/actions-creators/Login_action';
@@ -16,6 +18,7 @@ import { Dispatch,AnyAction } from 'redux';
 import {useHistory} from 'react-router-dom';
 
 type Props = {
+    auth:any,
     signIn: (login:any,history:any) => any,
 }
 
@@ -30,7 +33,7 @@ const theme = createTheme();
 
 const SignInComponent:React.FC<Props> = (props) => {
 
-    const {signIn} = props;
+    const {signIn,auth} = props;
     const history = useHistory();
     const [login,setLogin] = useState<ILogin>({email:'',password:''});
 
@@ -63,11 +66,11 @@ const SignInComponent:React.FC<Props> = (props) => {
             sm={4}
             md={7}
             sx={{
-            backgroundImage: 'url(https://images.unsplash.com/photo-1640975532489-a21f4e352ac5?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxfDB8MXxyYW5kb218MHx8fHx8fHx8MTY0MzY2ODgwNQ&ixlib=rb-1.2.1&q=80&w=1080)',
+            backgroundImage: 'url(https://oab.ambientebogota.gov.co/wp-content/uploads/2021/06/Icono-2B.png)',
             backgroundRepeat: 'no-repeat',
             backgroundColor: (t) =>
                 t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900],
-            backgroundSize: 'cover',
+            backgroundSize: 'contain',
             backgroundPosition: 'center',
             }}
         />
@@ -85,7 +88,7 @@ const SignInComponent:React.FC<Props> = (props) => {
                 <LockOutlinedIcon />
             </Avatar>
             <Typography component="h1" variant="h5">
-                Sign in
+                Ingresar
             </Typography>
             <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
                 <TextField
@@ -116,11 +119,11 @@ const SignInComponent:React.FC<Props> = (props) => {
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
                 >
-                Sign In
+                {auth.isLoading ?<CircularProgress color="secondary"/> : "Ingresar"}
                 </Button>
                 <Grid container>
                 <Grid item>
-                    <Link to="/registrarse">Don't have an account? Sign Up </Link>
+                    <Link to="/registrarse">¿No tienes una cuenta? Registrarse </Link>
                 </Grid>
                 </Grid>
             </Box>
@@ -131,6 +134,12 @@ const SignInComponent:React.FC<Props> = (props) => {
     );
 };
 
+const mapStatetoProps = (state:any) =>{
+    return{
+      auth:state.loggin
+    }
+}
+
 const mapDispatchToProps = (dispatch:Dispatch<AnyAction>) =>{
     return {
         signIn:(login:any,history:any) => {
@@ -139,4 +148,4 @@ const mapDispatchToProps = (dispatch:Dispatch<AnyAction>) =>{
     }
 }
 
-export default connect(null, mapDispatchToProps)(SignInComponent);
+export default connect(mapStatetoProps, mapDispatchToProps)(SignInComponent);

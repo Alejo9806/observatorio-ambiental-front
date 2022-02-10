@@ -10,10 +10,6 @@ interface ComplaintFailAction {
     payload: String
 }
 
-interface ComplaintLoadingAction {
-    type: ActionTypeComplaint.GET_ALL_COMPLAINT_LOADING
-}
-
 interface RegisterComplaintSuccessAction {
     type: ActionTypeComplaint.REGISTER_COMPLAINT_SUCCESS,
     payload: any
@@ -63,4 +59,22 @@ interface LogoutFailAction {
     type: ActionTypeLogin.LOGOUT_FAIL,
 }
 
-export type Action = ComplaintSuccessAction | ComplaintFailAction | ComplaintLoadingAction | RegisterComplaintSuccessAction| RegisterComplaintFailAction | RegisterComplaintLoadingAction | LogginSuccessAction | LogginFailAction | LogginLoadingAction | LogoutSuccessAction | LogoutFailAction | GetAddressSuccessAction | GetAddressFailAction;
+interface LoggonSuccessAction {
+    type: ActionTypeLogin.LOGGON_SUCCESS,
+    payload:any
+}
+
+
+
+interface LoggonFailAction {
+    type: ActionTypeLogin.LOGGON_FAIL,
+    payload:any
+}
+
+interface LoggonLoadingAction {
+    type: ActionTypeLogin.LOGGON_LOADING,
+}
+
+
+export type Action = ComplaintSuccessAction | ComplaintFailAction  | RegisterComplaintSuccessAction| RegisterComplaintFailAction | RegisterComplaintLoadingAction | LogginSuccessAction | LogginFailAction | LogginLoadingAction | LogoutSuccessAction | LogoutFailAction | GetAddressSuccessAction | GetAddressFailAction 
+    |LoggonSuccessAction | LoggonFailAction | LoggonLoadingAction;

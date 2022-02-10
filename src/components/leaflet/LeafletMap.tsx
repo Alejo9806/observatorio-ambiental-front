@@ -93,6 +93,7 @@ const mapStatetoProps = (state:any) =>{
   }
 
 const mapDispatchToProps = (dispatch:Dispatch<AnyAction>) =>{
+    return {};
 }
   
   

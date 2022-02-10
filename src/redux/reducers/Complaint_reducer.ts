@@ -55,11 +55,7 @@ export const complaint_reducer = (state:ComplaintState = getComplaintState , act
             return{...state,error:false,errMess:"", isLoading: false,complaint: action.payload,};
      
         case ActionTypeComplaint.GET_ALL_COMPLAINT_FAIL: 
-
             return{...state,error:true,isLoading: false ,errMess: action.payload, complaint:{}};
-        
-        case ActionTypeComplaint.GET_ALL_COMPLAINT_LOADING:
-            return {...state, isLoading: true, error:false,errMess:"", complaint:{}}
 
         default:
             break;

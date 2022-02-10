@@ -18,6 +18,8 @@ const getLogintState = {
     user:{},
 }
 
+
+
 export const login_reducer = (state:LoginState = getLogintState , action:Action) => {
     switch (action.type) {
         case ActionTypeLogin.LOGGIN_SUCCESS:
@@ -36,8 +38,18 @@ export const login_reducer = (state:LoginState = getLogintState , action:Action)
         case ActionTypeLogin.LOGOUT_FAIL:
             return {isLoading: false, error:false,isLoggedIn:false,errMess:"", user:{}}
 
+        case ActionTypeLogin.LOGGON_SUCCESS:
+            return{...state,error:false,errMess:"", isLoggedIn:true,isLoading: false,user: action.payload};
+        
+        case ActionTypeLogin.LOGGON_FAIL: 
+            return{...state,error:true,isLoading: false ,isLoggedIn:false,errMess: action.payload, user:{}};
+        
+        case ActionTypeLogin.LOGGON_LOADING:
+            return {...state, isLoading: true, isLoggedIn:false,error:false,errMess:"", user:{}}
+
         default:
             break;
     }
     return state;
 };
+

@@ -8,6 +8,7 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
+import { CircularProgress } from '@mui/material';
 
 type FormElement = React.FormEvent<HTMLFormElement>;
 
@@ -19,6 +20,7 @@ type Props = {
     auth:any,
     address:any,
     openstreetmap:number,
+    registerComplaintState:any,
     setOpenstreetmap:React.Dispatch<React.SetStateAction<number>>,
     setRefreshMap:React.Dispatch<React.SetStateAction<number>>,
     setOpen:React.Dispatch<React.SetStateAction<boolean>>,
@@ -47,7 +49,7 @@ const style = {
 
 const ComplaintRegister: React.FC<Props> = (props) => {
 
-    const {registerComplaint,getAddress,longitud,latitud,auth,address,openstreetmap,setOpenstreetmap,setRefreshMap,setOpen} = props;
+    const {registerComplaint,getAddress,longitud,latitud,auth,address,openstreetmap,registerComplaintState,setOpenstreetmap,setRefreshMap,setOpen} = props;
 
     const [complaint,setNewComplaint] = useState<IComplaint>({departamento:'',ciudad:'',titulo:'',descripcion:''})
    
@@ -127,7 +129,7 @@ const ComplaintRegister: React.FC<Props> = (props) => {
                     </Grid>
                     <br />
                     <Grid item xs={12} sm={12}>
-                        <Button type='submit' fullWidth variant="outlined">Enviar</Button>
+                        <Button type='submit' fullWidth variant="outlined">{registerComplaintState.isLoading  ?<CircularProgress color="secondary"/> : "Enviar"}</Button>
                     </Grid>
                 </form>
             </Box>
@@ -139,7 +141,8 @@ const ComplaintRegister: React.FC<Props> = (props) => {
 const mapStatetoProps = (state:any) =>{
     return{
       auth:state.loggin,
-      address:state.address
+      address:state.address,
+      registerComplaintState:state.registerComplaint
     }
   }
 
