@@ -3,10 +3,41 @@ import { ActionTypeComplaint } from "../action-types";
 import { Dispatch } from "redux";
 import axios from "axios";
 
-const getAllComplaint = () =>{
+const getAllComplaint = (token:string) =>{
     return async (dispatch: Dispatch) => {
         try {
-            await axios.get('http://localhost:4000/api/v1/denuncias')
+            await axios.get('http://localhost:4000/api/v1/denuncias',{headers:{'x-auth-token':token}})
+                .then(resp =>{
+                    const {data} = resp;
+                    dispatch({type:ActionTypeComplaint.GET_ALL_COMPLAINT_SUCCESS,payload:data});
+                })
+           
+        } catch (error:any) {
+            dispatch({type:ActionTypeComplaint.GET_ALL_COMPLAINT_FAIL,payload:{}});
+        }
+    }
+}
+
+const getApprovedComplaint = () =>{
+    return async (dispatch: Dispatch) => {
+        try {
+            await axios.get('http://localhost:4000/api/v1/denuncias/aprobadas')
+                .then(resp =>{
+                    const {data} = resp;
+                    console.log(data);
+                    dispatch({type:ActionTypeComplaint.GET_ALL_COMPLAINT_SUCCESS,payload:data});
+                })
+           
+        } catch (error:any) {
+            dispatch({type:ActionTypeComplaint.GET_ALL_COMPLAINT_FAIL,payload:{}});
+        }
+    }
+}
+
+const getEarringsComplaint = (token:string) =>{
+    return async (dispatch: Dispatch) => {
+        try {
+            await axios.get('http://localhost:4000/api/v1/denuncias/pendientes',{headers:{'x-auth-token':token}})
                 .then(resp =>{
                     const {data} = resp;
                     dispatch({type:ActionTypeComplaint.GET_ALL_COMPLAINT_SUCCESS,payload:data});
@@ -59,4 +90,4 @@ const getAddress = (lat:number,lon:number) => {
     }
 }
 
-export {getAllComplaint,registerComplaint,getAddress}
+export {getAllComplaint,registerComplaint,getAddress,getApprovedComplaint,getEarringsComplaint}

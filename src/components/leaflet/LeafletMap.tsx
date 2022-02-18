@@ -28,7 +28,8 @@ const LeafletMap:React.FC<Props>  = (props) => {
     const [open, setOpen] = useState(false);
     const [openstreetmap,setOpenstreetmap] = useState<number>(1);
     const [refreshMap,setRefreshMap] = useState<number>(0);
-    
+
+
     useEffect(() =>{
         navigator.geolocation.getCurrentPosition(
             (location) => {

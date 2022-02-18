@@ -2,7 +2,7 @@ import React,{useEffect,Fragment} from 'react';
 import { Marker,Popup } from 'react-leaflet';
 import { connect } from 'react-redux';
 import { AnyAction, Dispatch } from 'redux';
-import { getAllComplaint } from '../../redux/actions-creators/Complaint_action';
+import { getApprovedComplaint } from '../../redux/actions-creators/Complaint_action';
 import IconWarning from './IconWarning';
 
 //Mui
@@ -16,27 +16,25 @@ import Typography from '@mui/material/Typography';
 
 
 type Props = {
-  getAllComplaint: () => any,
+  getApprovedComplaint: () => any,
   getAllComplaintState:any,
   refreshMap:number,
   setRefreshMap:React.Dispatch<React.SetStateAction<number>>
 }
 
 const Markers: React.FC<Props> = (props) => {
-  const {getAllComplaint,getAllComplaintState,refreshMap,setRefreshMap} = props;
+  const {getApprovedComplaint,getAllComplaintState,refreshMap,setRefreshMap} = props;
 
   useEffect(() => {
-    console.log(refreshMap)
-    if(refreshMap === 0){
-      getAllComplaint();
-      
+    if(refreshMap === 0) {
+      getApprovedComplaint();
     }  
-    setRefreshMap(1);
+    setRefreshMap(1)
   });
 
   return (
    <Fragment>
-      {getAllComplaintState.complaint.denuncias && getAllComplaintState.complaint.denuncias.map((denuncia:any,index:number)=>(
+      {getAllComplaintState.complaint.denuncias ? getAllComplaintState.complaint.denuncias.map((denuncia:any,index:number)=>(
         <Marker position={[denuncia.ubicacion.coordenadas.longitud, denuncia.ubicacion.coordenadas.latitud]} icon={IconWarning} key={index}>
           <Popup>
           <Card sx={{ maxWidth: 345 }}>
@@ -91,7 +89,7 @@ const Markers: React.FC<Props> = (props) => {
             </CardActions>
           </Card>
           </Popup>
-        </Marker>))}
+        </Marker>)) : null}
    </Fragment>
   );
 };
@@ -99,14 +97,14 @@ const Markers: React.FC<Props> = (props) => {
 
 const mapStateProps = (state:any) =>{
   return{
-      getAllComplaintState:state.allComplaint
+      getAllComplaintState:state.allComplaint,
   }
 }
 
 const mapDispatchToProps = (dispatch:Dispatch<AnyAction>) =>{
   return {
-      getAllComplaint:() => {
-          dispatch<any>(getAllComplaint()) 
+      getApprovedComplaint:() => {
+          dispatch<any>(getApprovedComplaint()) 
       },
   }
 }

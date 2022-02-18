@@ -20,9 +20,11 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
+import { getAllComplaint, getApprovedComplaint, getEarringsComplaint } from '../redux/actions-creators/Complaint_action';
 
 const pages = [{name:'Mapa',link:'/'},{name:'Ingresar',link:'/ingresar'}, {name:'Registrarse',link:'/registrarse'}];
 const pagesIsLoggin = [{name:'Mapa',link:'/'}];
+const pagesIslogginRoot = [{name:'Mapa',link:'/'},{name:'Usuarios',link:'/usuarios'}]
 const settings = ['Logout'];
 
 const darkTheme = createTheme({
@@ -36,23 +38,36 @@ const darkTheme = createTheme({
 
 type Props = {
   auth:any,
-  logOut:(history:any) => any
+  logOut:(history:any) => any,
+  getAllComplaint:(token:string) => any,
+  getApprovedComplaint:() => any,
+  getEarringsComplaint:(token:string) => any
 }
 
 const NavBar:React.FC<Props> = (props) => {
-  const {auth,logOut} = props;
+  const {auth,logOut,getAllComplaint,getApprovedComplaint,getEarringsComplaint} = props;
   const history = useHistory();
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
+  const [anchorSelect, setAnchorSelect] = React.useState<null | HTMLElement>(null);
 
   const logOutClick = () =>{
     logOut(history);
+    getApprovedComplaint()
   }
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
   };
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget);
+  };
+
+  const handleOpenSelectMenu = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorSelect(event.currentTarget);
+  };
+
+  const handleCloseSelectMenu = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorSelect(null);
   };
 
   const handleCloseNavMenu = () => {
@@ -62,6 +77,16 @@ const NavBar:React.FC<Props> = (props) => {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
+
+  const getAll = () =>{
+    getAllComplaint(auth.user.token)
+  }
+  const getApproved = () =>{
+    getApprovedComplaint()
+  }
+  const getEarrings = () =>{
+    getEarringsComplaint(auth.user.token)
+  }
   return (
     <ThemeProvider theme={darkTheme}>
       <AppBar position="static">
@@ -100,12 +125,16 @@ const NavBar:React.FC<Props> = (props) => {
                 display: { xs: 'block', md: 'none' },
               }}
             >
-              {auth.isLoggedIn ?  pagesIsLoggin.map((page,index) => (
+              {auth.isLoggedIn && auth.user.user.rol === 'PENDIENTE' ?  pagesIsLoggin.map((page,index) => (
                 <MenuItem key={index} onClick={handleCloseNavMenu}>
                   <Typography textAlign="center"><Link className='navLinkR' to={page.link} >{page.name}</Link></Typography>
                 </MenuItem>
-              )) : 
-              pages.map((page,index) => (
+              )) :auth.isLoggedIn && auth.user.user.rol === 'ROOT'  ? pagesIslogginRoot.map((page,index) => (
+                <MenuItem key={index} onClick={handleCloseNavMenu}>
+                  <Typography textAlign="center"><Link className='navLinkR' to={page.link} >{page.name}</Link></Typography>
+                </MenuItem>
+                ))
+                : pages.map((page,index) => (
                 <MenuItem key={index} onClick={handleCloseNavMenu}>
                   <Typography textAlign="center"><Link className='navLinkR' to={page.link} >{page.name}</Link></Typography>
                 </MenuItem>
@@ -121,7 +150,7 @@ const NavBar:React.FC<Props> = (props) => {
             OBSERVAOTRIO ALMAVI
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-            {auth.isLoggedIn ?  pagesIsLoggin.map((page,index) => (
+            { auth.isLoggedIn && auth.user.user.rol === 'PENDIENTE' ?  pagesIsLoggin.map((page,index) => (
               <Button
                 key={index}
                 onClick={handleCloseNavMenu}
@@ -129,7 +158,16 @@ const NavBar:React.FC<Props> = (props) => {
               >
                 <Link className='navLink' to={page.link} >{page.name}</Link>             
               </Button>
-            )) :pages.map((page,index) => (
+            )) : auth.isLoggedIn && auth.user.user.rol === 'ROOT'  ? pagesIslogginRoot.map((page,index) => (
+              <Button
+                key={index}
+                onClick={handleCloseNavMenu}
+                sx={{ my: 2, color: 'white', display: 'block' }}
+              >
+                <Link className='navLink' to={page.link} >{page.name}</Link>             
+              </Button>
+              ))
+              :pages.map((page,index) => (
               <Button
                 key={index}
                 onClick={handleCloseNavMenu}
@@ -138,6 +176,42 @@ const NavBar:React.FC<Props> = (props) => {
                 <Link className='navLink' to={page.link} >{page.name}</Link>             
               </Button>
             ))}
+            {auth.isLoggedIn && auth.user.user.rol === 'ROOT'  ?
+            <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'flex' } }}>
+              <Button
+                sx={{ my: 2, color: 'white', display: 'block' }}
+               
+              >
+                <Typography className='navLink'  variant='body2' component='div' onClick={handleOpenSelectMenu}>denuncias</Typography>             
+              </Button>
+              <Menu
+               sx={{ mt: '45px' }}
+               id="menu-appbar"
+               anchorEl={anchorSelect}
+               anchorOrigin={{
+                 vertical: 'top',
+                 horizontal: 'right',
+               }}
+               keepMounted
+               transformOrigin={{
+                 vertical: 'top',
+                 horizontal: 'right',
+               }}
+               open={Boolean(anchorSelect)}
+               onClose={handleCloseSelectMenu}
+              > 
+                <MenuItem onClick={handleCloseSelectMenu}>
+                  <Typography textAlign="center" onClick={getAll}>Todas las denuncias</Typography>
+                </MenuItem> 
+                <MenuItem onClick={handleCloseSelectMenu}>
+                  <Typography textAlign="center" onClick={getEarrings}>Pendientes</Typography>
+                </MenuItem> 
+                <MenuItem onClick={handleCloseSelectMenu}>
+                  <Typography textAlign="center" onClick={getApproved}>Aprobadas</Typography>
+                </MenuItem> 
+              </Menu> 
+            </Box>
+            : null}
           </Box>
       
          {auth.isLoggedIn && <Box sx={{ flexGrow: 0 }}>
@@ -210,7 +284,16 @@ const mapDispatchToProps = (dispatch:Dispatch<AnyAction>) =>{
   return {
       logOut: (history:any) =>{
           dispatch<any>(LogOutAuthAction(history))
-      }
+      },
+      getAllComplaint:(token:string) => {
+        dispatch<any>(getAllComplaint(token)) 
+      },
+      getApprovedComplaint:() => {
+        dispatch<any>(getApprovedComplaint()) 
+      },
+      getEarringsComplaint:(token:string) => {
+        dispatch<any>(getEarringsComplaint(token)) 
+      },
   }
 }
 
