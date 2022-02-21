@@ -49,6 +49,21 @@ const getEarringsComplaint = (token:string) =>{
     }
 }
 
+const getRejectsComplaint = (token:string) =>{
+    return async (dispatch: Dispatch) => {
+        try {
+            await axios.get('http://localhost:4000/api/v1/denuncias/rechazadas',{headers:{'x-auth-token':token}})
+                .then(resp =>{
+                    const {data} = resp;
+                    dispatch({type:ActionTypeComplaint.GET_ALL_COMPLAINT_SUCCESS,payload:data});
+                })
+           
+        } catch (error:any) {
+            dispatch({type:ActionTypeComplaint.GET_ALL_COMPLAINT_FAIL,payload:{}});
+        }
+    }
+}
+
 const registerComplaint = (complaintState:any,token:string) => {
     return async (dispatch:Dispatch) => {
         dispatch(registerComplaintActionLoading());
@@ -78,7 +93,7 @@ const registerComplaintActionLoading = () =>({
 const getAddress = (lat:number,lon:number) => {
     return async (dispatch:Dispatch) => {
         try {
-            await axios.post('https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat='+lon+'&lon='+lat)
+            await axios.get('https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat='+lon+'&lon='+lat)
                 .then(resp => {
                     const {data} = resp;
                     dispatch({type:ActionTypeComplaint.GET_ADDRESS_SUCCESS,payload:data});
@@ -90,4 +105,24 @@ const getAddress = (lat:number,lon:number) => {
     }
 }
 
-export {getAllComplaint,registerComplaint,getAddress,getApprovedComplaint,getEarringsComplaint}
+
+const updateComplaintStatus = (complaintStatus:any,token:string) => {
+    return async (dispatch:Dispatch) => {
+        try {
+            await axios.put('http://localhost:4000/api/v1/denuncia/updatestatus',complaintStatus,{headers:{'x-auth-token':token}})
+                .then(resp => {
+                    const {data} = resp;
+                    dispatch({type:ActionTypeComplaint.REGISTER_COMPLAINT_SUCCESS,payload:data});
+                })          
+        } catch (error:any) {
+            Swal.fire({
+                text:error.response.data.message,
+                icon:"error",
+            })
+            dispatch({type:ActionTypeComplaint.REGISTER_COMPLAINT_FAIL,payload:error});
+        }
+    }
+}
+
+
+export {getAllComplaint,registerComplaint,getAddress,getApprovedComplaint,getEarringsComplaint,updateComplaintStatus,getRejectsComplaint}

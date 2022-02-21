@@ -2,9 +2,9 @@ import React,{useEffect,Fragment} from 'react';
 import { Marker,Popup } from 'react-leaflet';
 import { connect } from 'react-redux';
 import { AnyAction, Dispatch } from 'redux';
-import { getApprovedComplaint } from '../../redux/actions-creators/Complaint_action';
+import { getApprovedComplaint, updateComplaintStatus } from '../../redux/actions-creators/Complaint_action';
 import IconWarning from './IconWarning';
-
+import { Link } from 'react-router-dom';
 //Mui
 
 import Card from '@mui/material/Card';
@@ -19,11 +19,13 @@ type Props = {
   getApprovedComplaint: () => any,
   getAllComplaintState:any,
   refreshMap:number,
-  setRefreshMap:React.Dispatch<React.SetStateAction<number>>
+  auth:any,
+  setRefreshMap:React.Dispatch<React.SetStateAction<number>>,
+  updateComplaintStatus: (complaintStatus:any,token:string) => any,
 }
 
 const Markers: React.FC<Props> = (props) => {
-  const {getApprovedComplaint,getAllComplaintState,refreshMap,setRefreshMap} = props;
+  const {getApprovedComplaint,getAllComplaintState,refreshMap,setRefreshMap,auth,updateComplaintStatus} = props;
 
   useEffect(() => {
     if(refreshMap === 0) {
@@ -31,6 +33,26 @@ const Markers: React.FC<Props> = (props) => {
     }  
     setRefreshMap(1)
   });
+
+  const acceptComplaint= (id:string) =>{
+    console.log(id);
+    let state ={
+      id,
+      status:"APROVADA"
+    }
+    updateComplaintStatus(state,auth.user.token);
+    setRefreshMap(0)
+  }
+
+  const rejectComplaint = (id:string) =>{
+    console.log(id)
+    let state ={
+      id,
+      status:"RECHAZADA"
+    }
+    updateComplaintStatus(state,auth.user.token);
+    setRefreshMap(0)
+  }
 
   return (
    <Fragment>
@@ -83,10 +105,12 @@ const Markers: React.FC<Props> = (props) => {
                 Cuidado: {denuncia.denuncia.warning.message}
               </Typography>}
             </CardContent>
+            {auth.isLoggedIn && auth.user.user.rol === 'ROOT' ?
             <CardActions>
-              <Button size="small">Share</Button>
-              <Button size="small">Learn More</Button>
-            </CardActions>
+              <Button size="small"><Link className='navLinkR' to={'/seguimiento/'+denuncia._id} >SEGUIMIENTO</Link></Button>
+              {denuncia.denuncia.estado !== 'APROVADA' ? <Button size="small" onClick={() => acceptComplaint(denuncia._id)}>APROBAR</Button> :null}
+              {denuncia.denuncia.estado !== 'RECHAZADA' ? <Button size="small" onClick={() => rejectComplaint(denuncia._id)}>RECHAZAR</Button> :null}
+            </CardActions>:null}
           </Card>
           </Popup>
         </Marker>)) : null}
@@ -98,6 +122,7 @@ const Markers: React.FC<Props> = (props) => {
 const mapStateProps = (state:any) =>{
   return{
       getAllComplaintState:state.allComplaint,
+      auth:state.loggin
   }
 }
 
@@ -106,6 +131,9 @@ const mapDispatchToProps = (dispatch:Dispatch<AnyAction>) =>{
       getApprovedComplaint:() => {
           dispatch<any>(getApprovedComplaint()) 
       },
+      updateComplaintStatus:(complaintStatus:any,token:string) =>{
+        dispatch<any>(updateComplaintStatus(complaintStatus,token)) 
+      }
   }
 }
 

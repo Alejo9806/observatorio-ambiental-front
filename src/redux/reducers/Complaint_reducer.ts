@@ -14,6 +14,13 @@ interface IAddress {
     address:{}
 }
 
+interface UpdateComplaintState  {
+    error:Boolean,
+    errMess:string,
+    complaint:{},
+}
+
+
 const getComplaintState = {
     error:false,
     errMess:"",
@@ -33,6 +40,13 @@ const addressState = {
     errMess:"",
     address:{}
 }
+
+const updateComplaintState = {
+    error:false,
+    errMess:"",
+    complaint:{},
+}
+
 
 export const address_reducer = (state:IAddress = addressState, action:Action) => {
     switch (action.type) {
@@ -76,6 +90,22 @@ export const registerComplaint_reducer= (state:ComplaintState = registerComplain
         case ActionTypeComplaint.REGISTER_COMPLAINT_LOADING:
 
             return {...state, isLoading: true,  complaint:{}}
+
+        default:
+            break;
+    }
+    return state;
+};
+
+export const updateComplaint_reducer = (state:UpdateComplaintState = updateComplaintState , action:Action) => {
+    switch (action.type) {
+        case ActionTypeComplaint.UPDATE_COMPLAINT_STATUS_SUCCESS:
+            return{...state,error:false,errMess:"",complaint: action.payload};
+     
+        case ActionTypeComplaint.UPDATE_COMPLAINT_STATUS_FAIL: 
+
+            return{...state,error:true ,errMess: action.payload, complaint:{}};
+
 
         default:
             break;

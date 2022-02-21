@@ -1,4 +1,4 @@
-import React from 'react'
+import React,{useEffect} from 'react'
 import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -11,6 +11,17 @@ import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
 import CancelIcon from '@mui/icons-material/Cancel';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import { connect } from 'react-redux';
+import { getPiraguerosStatus, updatePiragueroStatus } from '../../redux/actions-creators/officer_action';
+import { AnyAction, Dispatch } from 'redux';
+
+
+type Props = {
+  getPiraguerosStatus: (status:string,token:string) => any,
+  updatePiragueroStatus:(status:any,token:string) => any,
+  piraguerosState:any,
+  auth:any,
+}
 
 interface Column {
     id: 'name' | 'actions' | 'city' | 'id' ;
@@ -44,27 +55,26 @@ interface Column {
     return { id, name, city, actions };
   }
   
- 
+  
   
 
-const UserList = () => {
+const UserList: React.FC<Props>  = (props) => {
+    let rows: any[] = [];
+    const {getPiraguerosStatus,updatePiragueroStatus,piraguerosState,auth} = props;
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
+    const [effect,setEffect] = React.useState(true)
 
-    const rows = [
-        createData(1324171354, 'Victor Daniel Mora Jaramillo', 'Bello', 'dasfas434531245'),
-        createData(1403500365, 'Juan Diego Quintero', 'Marinilla', 'dasfas434531245'),
-        createData(60483973, 'Alejandro Muñoz Acevedo', 'Envigado', 'dasfas434531245'),
-        createData(1324171354, 'Victor Daniel Mora Jaramillo', 'Bello', 'dasfas434531245'),
-        createData(1403500365, 'Juan Diego Quintero', 'Marinilla', 'dasfas434531245'),
-        createData(60483973, 'Alejandro Muñoz Acevedo', 'Envigado', 'dasfas434531245'),
-        createData(1324171354, 'Victor Daniel Mora Jaramillo', 'Bello', 'dasfas434531245'),
-        createData(1403500365, 'Juan Diego Quintero', 'Marinilla', 'dasfas434531245'),
-        createData(60483973, 'Alejandro Muñoz Acevedo', 'Envigado', 'dasfas434531245'),
-        createData(1324171354, 'Victor Daniel Mora Jaramillo', 'Bello', 'dasfas434531245'),
-        createData(1403500365, 'Juan Diego Quintero', 'Marinilla', 'dasfas434531245'),
-        createData(60483973, 'Alejandro Muñoz Acevedo', 'Envigado', 'dasfas434531245'),
-    ];
+    useEffect(() =>{
+        getPiraguerosStatus('PENDIENTE',auth.user.token);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    },[effect]);
+
+    if (Object.keys(piraguerosState.piragueros).length !== 0 ) {
+      piraguerosState.piragueros.piragueros.forEach((piraguero:any) =>{
+        rows.push(createData(piraguero.numeroDocumento,piraguero.nombre,piraguero.ubicacion,piraguero._id))
+      })
+    }
 
     const handleChangePage = (event: unknown, newPage: number) => {
       setPage(newPage);
@@ -74,7 +84,27 @@ const UserList = () => {
       setRowsPerPage(+event.target.value);
       setPage(0);
     };
-  
+
+    const acceptPiraguero = (id:string) =>{
+      console.log(id);
+      let state ={
+        id,
+        status:"PIRAGUERO"
+      }
+      updatePiragueroStatus(state,auth.user.token);
+      setEffect(!effect)
+    }
+
+    const rejectPiraguero = (id:string) =>{
+      console.log(id)
+      let state ={
+        id,
+        status:"RECHAZADA"
+      }
+      updatePiragueroStatus(state,auth.user.token);
+      setEffect(!effect)
+    }
+
     return (
       <Paper sx={{ width: '100%', overflow: 'hidden', marginTop:2,height:'100%'}}>
         <TableContainer sx={{ maxHeight: 440 }}>
@@ -104,8 +134,8 @@ const UserList = () => {
                           <TableCell key={column.id} align={column.align}>
                               {column.id === 'actions' ? 
                                 <Stack spacing={2} direction="row">
-                                    <Button variant="contained" color='success'>Aceptar <CheckCircleIcon/></Button>
-                                    <Button variant="contained" color='error'>Rechazar  <CancelIcon/></Button>
+                                    <Button variant="contained" color='success' onClick={() => acceptPiraguero(value)}>Aceptar <CheckCircleIcon/></Button>
+                                    <Button variant="contained" color='error' onClick={() => rejectPiraguero(value)}>Rechazar  <CancelIcon/></Button>
                                 </Stack> : value}
                           </TableCell>
                         );
@@ -129,4 +159,22 @@ const UserList = () => {
     );
 }
 
-export default UserList
+const mapStateProps = (state:any) =>{
+  return{
+      piraguerosState:state.piragueros,
+      auth:state.loggin,
+  }
+}
+
+const mapDispatchToProps = (dispatch:Dispatch<AnyAction>) =>{
+  return {
+      getPiraguerosStatus:(status:string,token:string) => {
+          dispatch<any>(getPiraguerosStatus(status,token)) 
+      },
+      updatePiragueroStatus:(status:any,token:string) =>{
+        dispatch<any>(updatePiragueroStatus(status,token)) 
+      }
+  }
+}
+
+export default connect(mapStateProps,mapDispatchToProps)(UserList)
