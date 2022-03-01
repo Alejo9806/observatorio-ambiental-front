@@ -38,7 +38,7 @@ const Markers: React.FC<Props> = (props) => {
     console.log(id);
     let state ={
       id,
-      status:"APROVADA"
+      status:"APROBADA"
     }
     updateComplaintStatus(state,auth.user.token);
     setRefreshMap(0)
@@ -53,7 +53,7 @@ const Markers: React.FC<Props> = (props) => {
     updateComplaintStatus(state,auth.user.token);
     setRefreshMap(0)
   }
-
+ 
   return (
    <Fragment>
       {getAllComplaintState.complaint.denuncias ? getAllComplaintState.complaint.denuncias.map((denuncia:any,index:number)=>(
@@ -65,7 +65,7 @@ const Markers: React.FC<Props> = (props) => {
               height="140"
               image="/static/images/cards/contemplative-reptile.jpg"
               alt="green iguana"
-            /> */}
+            />` */}
             <CardContent>
               <Typography gutterBottom variant="h5" component="div">
                 Ubicacion
@@ -104,11 +104,33 @@ const Markers: React.FC<Props> = (props) => {
               <Typography variant="body2" color="text.secondary">
                 Cuidado: {denuncia.denuncia.warning.message}
               </Typography>}
+              {denuncia.seguimiento.length !== 0 ? 
+                <div>
+                  <Typography gutterBottom variant="h5" component="div">
+                    Última actualizacion de seguimiento
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                      Clase de seguimiento: {denuncia.seguimiento[denuncia.seguimiento.length - 1].clase}
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                      Tipo de seguimiento: {denuncia.seguimiento[denuncia.seguimiento.length - 1].tipo}
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                      Fecha de actuación: {denuncia.seguimiento[denuncia.seguimiento.length - 1].fechaActuacion.slice(0,10)}
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                      Retroalimentación: {denuncia.seguimiento[denuncia.seguimiento.length - 1].hallazgos}
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                      Encargado: {denuncia.seguimiento[denuncia.seguimiento.length - 1].encargado}
+                    </Typography>
+                  </div>:null
+                }
             </CardContent>
             {auth.isLoggedIn && auth.user.user.rol === 'ROOT' ?
             <CardActions>
-              <Button size="small"><Link className='navLinkR' to={'/seguimiento/'+denuncia._id} >SEGUIMIENTO</Link></Button>
-              {denuncia.denuncia.estado !== 'APROVADA' ? <Button size="small" onClick={() => acceptComplaint(denuncia._id)}>APROBAR</Button> :null}
+              {denuncia.denuncia.estado === 'APROBADA' ? <Button size="small"><Link className='navLinkR' to={'/seguimiento/'+denuncia._id} >SEGUIMIENTO</Link></Button> :null}
+              {denuncia.denuncia.estado !== 'APROBADA' ? <Button size="small" onClick={() => acceptComplaint(denuncia._id)}>APROBAR</Button> :null}
               {denuncia.denuncia.estado !== 'RECHAZADA' ? <Button size="small" onClick={() => rejectComplaint(denuncia._id)}>RECHAZAR</Button> :null}
             </CardActions>:null}
           </Card>

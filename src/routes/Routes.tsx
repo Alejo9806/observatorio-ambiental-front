@@ -12,6 +12,7 @@ import SignIn from "../pages/SignIn";
 import SignUp from "../pages/SignUp";
 import Users from "../pages/Users";
 import FollowUp from "../pages/FollowUp";
+import ComplaintDetail from "../pages/ComplaintDetail";
 
 export class Routes extends Component {
     render() {
@@ -22,6 +23,7 @@ export class Routes extends Component {
             <PublicRoute exact path="/ingresar" component={SignIn}></PublicRoute>
             <PublicRoute exact path="/registrarse" component={SignUp}></PublicRoute>
             <PrivateRoute exact path='/usuarios' component={Users}></PrivateRoute>
+            <PrivateRoute exact path='/denuncias' component={ComplaintDetail}></PrivateRoute>
             <PrivateRoute exact path='/seguimiento/:id' component={FollowUp}></PrivateRoute>
             <Redirect to='/'/>
           </Switch>

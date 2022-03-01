@@ -28,6 +28,17 @@ const updatePiragueroState = {
     piraguero:{},
 }
 
+interface RegisterTrackingState  {
+    error:Boolean,
+    errMess:string,
+    complaint:{},
+}
+
+const registerTrackingState = {
+    error:false,
+    errMess:"",
+    complaint:{},
+}
 
 
 export const piragueros_reducer = (state:PiraguerosState = getPiraguerosState , action:Action) => {
@@ -55,6 +66,22 @@ export const updatePiraguero_reducer = (state:UpdatePiragueroState = updatePirag
             return{...state,error:false,errMess:"",piraguero: action.payload};
      
         case ActionTypeOfficer.UPDATE_PIRAGUERO_FAIL: 
+
+            return{...state,error:true ,errMess: action.payload, piraguero:{}};
+
+
+        default:
+            break;
+    }
+    return state;
+};
+
+export const registerTracking_reducer = (state:RegisterTrackingState = registerTrackingState , action:Action) => {
+    switch (action.type) {
+        case ActionTypeOfficer.REGISTER_TRACKING_SUCCESS:
+            return{...state,error:false,errMess:"",piraguero: action.payload};
+     
+        case ActionTypeOfficer.REGISTER_TRACKING_FAIL: 
 
             return{...state,error:true ,errMess: action.payload, piraguero:{}};
 

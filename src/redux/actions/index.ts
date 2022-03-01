@@ -109,5 +109,16 @@ interface UpdateComplaintFailAction {
     payload: String
 }
 
+interface RegisterTrackingSuccessAction {
+    type: ActionTypeOfficer.REGISTER_TRACKING_SUCCESS,
+    payload: Object
+}
+
+interface RegisterTrackingFailAction {
+    type: ActionTypeOfficer.REGISTER_TRACKING_FAIL,
+    payload: String
+}
+
+
 export type Action = ComplaintSuccessAction | ComplaintFailAction  | RegisterComplaintSuccessAction| RegisterComplaintFailAction | RegisterComplaintLoadingAction | LogginSuccessAction | LogginFailAction | LogginLoadingAction | LogoutSuccessAction | LogoutFailAction | GetAddressSuccessAction | GetAddressFailAction 
-    |LoggonSuccessAction | LoggonFailAction | LoggonLoadingAction | PiraguerosSuccessAction | PiraguerosFailAction | PiraguerosLoadingAction | UpdatePiraguerosSuccessAction | UpdatePiraguerosFailAction | UpdateComplaintSuccessAction | UpdateComplaintFailAction ;
+    |LoggonSuccessAction | LoggonFailAction | LoggonLoadingAction | PiraguerosSuccessAction | PiraguerosFailAction | PiraguerosLoadingAction | UpdatePiraguerosSuccessAction | UpdatePiraguerosFailAction | UpdateComplaintSuccessAction | UpdateComplaintFailAction  | RegisterTrackingSuccessAction | RegisterTrackingFailAction;

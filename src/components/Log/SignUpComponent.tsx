@@ -57,7 +57,7 @@ const SignUpComponent:React.FC<Props>  = (props) => {
   }
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        if (register.nombre !== '' && register.fechaNacimiento !== null  && register.tipo !== '' && register.tipoDocumento !== '' && register.numeroDocumento !== '' && register.ubicacion !== '' && register.email !== '' && register.password !== '') {
+        if (register.nombre !== ''  || register.fechaNacimiento !== null  || register.tipo !== ''  || register.tipoDocumento !== ''  || register.numeroDocumento !== ''  || register.ubicacion !== ''  || register.email !== ''  || register.password !== '') {
           signUp(register,history);
         }
       };

@@ -46,4 +46,23 @@ const updatePiragueroStatus = (status:any,token:string) =>{
     }
 }
 
-export {getPiraguerosStatus,updatePiragueroStatus}
+const registerTracking = (tracking:any,token:string,history:any) => {
+    return async (dispatch:Dispatch) => {
+        try {
+            await axios.put('http://5010-2800-484-9498-1901-99b-736f-4373-1071.ngrok.io/api/v1/denuncia/seguimiento',tracking,{headers:{'x-auth-token':token}})
+                .then(resp => {
+                    const {data} = resp;
+                    dispatch({type:ActionTypeOfficer.REGISTER_TRACKING_SUCCESS,payload:data});
+                    history.push("/")
+                })          
+        } catch (error:any) {
+            Swal.fire({
+                text:error.response.data.message,
+                icon:"error",
+            })
+            dispatch({type:ActionTypeOfficer.REGISTER_TRACKING_FAIL,payload:error});
+        }
+    }
+}
+
+export {getPiraguerosStatus,updatePiragueroStatus,registerTracking}
