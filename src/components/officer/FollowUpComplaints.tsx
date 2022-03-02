@@ -1,4 +1,4 @@
-import React,{useState} from 'react'
+import React,{useState,useEffect} from 'react'
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
@@ -17,12 +17,15 @@ import { connect } from 'react-redux';
 import { Dispatch,AnyAction } from 'redux';
 import { useParams } from "react-router-dom";
 import { registerTracking } from '../../redux/actions-creators/officer_action';
+import { getComplaint } from '../../redux/actions-creators/Complaint_action';
 
 const theme = createTheme();
 
 type Props = {
   auth:any,
   registerTracking:(tracking:any,token:string,history:any) => any,
+  getComplaintId:(id:string) => any,
+  complaint:any
 }
 
 interface ITracking {
@@ -36,10 +39,15 @@ type QuizParams = {
 };
 
 const FollowUpComplaints:React.FC<Props> = (props)=> {
-  const {registerTracking,auth} = props;
+  const {registerTracking,auth,complaint,getComplaintId} = props;
   const[tracking,setTracking] = useState<ITracking>({typeTracking:'',tipo:'',fechaActuacion:new Date(),hallazgos:''});
   const {id} = useParams<QuizParams>();
   const history = useHistory();
+
+  useEffect(()=>{
+    getComplaintId(id);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  },[id])
 
   const handlechange = (e: React.ChangeEvent<HTMLInputElement>) =>{
         
@@ -74,7 +82,7 @@ const FollowUpComplaints:React.FC<Props> = (props)=> {
     <ThemeProvider theme={theme}>
     <Grid container component="main" sx={{ height: '100vh' }}>
       <CssBaseline />
-      <Grid
+      {Object.keys(complaint.complaint).length !== 0 ? <Grid
         item
         xs={12}
         sm={6}
@@ -89,11 +97,11 @@ const FollowUpComplaints:React.FC<Props> = (props)=> {
         Ubicacion
         </Typography>
         <Typography variant="body2" color="text.secondary" sx={{paddingLeft:3}}>
-        Departamento:
+        Departamento: {complaint.complaint.denuncia.ubicacion.departamento}
         </Typography>
         <br />
         <Typography variant="body2" color="text.secondary" sx={{paddingLeft:3}}>
-        Ciudad: 
+        Ciudad: {complaint.complaint.denuncia.ubicacion.ciudad}
         </Typography>
         <br />
         <Typography gutterBottom variant="h5" component="div" sx={{paddingLeft:3}}>
@@ -101,23 +109,23 @@ const FollowUpComplaints:React.FC<Props> = (props)=> {
         </Typography>
         <br />
         <Typography variant="body2" color="text.secondary" sx={{paddingLeft:3}}>
-        Titulo: 
+        Titulo: {complaint.complaint.denuncia.denuncia.titulo}
         </Typography>
         <br />
         <Typography variant="body2" color="text.secondary" sx={{paddingLeft:3}}>
-        Fecha de generacion de la denuncia: 
+        Fecha de generacion de la denuncia: {complaint.complaint.denuncia.denuncia.fechaCreacion.slice(0,10)}
         </Typography>
         <br />
         <Typography variant="body2" color="text.secondary" sx={{paddingLeft:3}}>
-        Fecha ultima actualizacion de denuncia:
+        Fecha ultima actualizacion de denuncia: {complaint.complaint.denuncia.denuncia.fechaUltimaActualizacion.slice(0,10)}
         </Typography>
         <br />
         <Typography variant="body2" color="text.secondary" sx={{paddingLeft:3}}>
-        Descripcion: 
+        Descripcion: {complaint.complaint.denuncia.denuncia.descripcion}
         </Typography>
         <br />
         <Typography variant="body2" color="text.secondary" sx={{paddingLeft:3}}>
-        Estado: 
+        Estado: {complaint.complaint.denuncia.denuncia.estado}
         </Typography>
         <br />
         <Typography gutterBottom variant="h5" component="div" sx={{paddingLeft:3}}>
@@ -125,9 +133,51 @@ const FollowUpComplaints:React.FC<Props> = (props)=> {
         </Typography>
         <br />
         <Typography variant="body2" color="text.secondary" sx={{paddingLeft:3}}>
-        Praguero denunciante: 
+        Praguero denunciante: {complaint.complaint.denuncia.piraguero.nombre}
         </Typography>
-      </Grid>
+        {complaint.complaint.denuncia.warning && 
+        <Typography variant="body2" color="text.secondary">
+          Cuidado: {complaint.complaint.denuncia.denuncia.warning.message}
+        </Typography>}
+        <br />
+        <Typography gutterBottom variant="h5" component="div" sx={{paddingLeft:3}}>
+                Seguimiento
+        </Typography>
+        {complaint.complaint.denuncia.seguimiento.length !== 0 ? complaint.complaint.denuncia.seguimiento.map((seguimiento:any,index:number)=>(
+            <Grid
+            item
+            xs={12}
+            sm={6}
+            md={6}
+            sx={{padding:3}}
+            key={index}
+            >
+               <Typography gutterBottom variant="h5" component="div">
+                Seguimiento: {index + 1}
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                Clase de seguimiento: {seguimiento.clase}
+              </Typography>
+              <br />
+              <Typography variant="body2" color="text.secondary">
+                Tipo de seguimiento: {seguimiento.tipo}
+              </Typography>
+              <br />
+              <Typography variant="body2" color="text.secondary">
+                Fecha de actuación: {seguimiento.fechaActuacion.slice(0,10)}
+              </Typography>
+              <br />
+              <Typography variant="body2" color="text.secondary">
+                Retroalimentación: {seguimiento.hallazgos}
+              </Typography>
+              <br />
+              <Typography variant="body2" color="text.secondary">
+                Encargado: {seguimiento.encargado}
+              </Typography>
+            </Grid>
+        ))     
+        : null}
+      </Grid>:null}
       <Grid item xs={12} sm={6} md={6} component={Paper} elevation={6} square>
         <Box
           sx={{
@@ -222,7 +272,8 @@ const FollowUpComplaints:React.FC<Props> = (props)=> {
 
 const mapStatetoProps = (state:any) =>{
   return{
-    auth:state.loggin
+    auth:state.loggin,
+    complaint:state.complaintId
   }
 }
 
@@ -232,6 +283,9 @@ const mapDispatchToProps = (dispatch:Dispatch<AnyAction>) =>{
       registerTracking:(tracking:any,token:string,history:any) => {
           dispatch<any>(registerTracking(tracking,token,history));
       },
+      getComplaintId:(id:string) =>{
+        dispatch<any>(getComplaint(id));
+      }
   }
 }
 

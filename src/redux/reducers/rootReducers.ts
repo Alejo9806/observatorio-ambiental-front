@@ -1,6 +1,6 @@
 import {combineReducers} from "redux";
 //importar Reducers
-import {complaint_reducer,registerComplaint_reducer,address_reducer} from './Complaint_reducer';
+import {complaint_reducer,registerComplaint_reducer,address_reducer,get_complaint_reducer} from './Complaint_reducer';
 import { login_reducer} from "./Login_reducer";
 import { piragueros_reducer,updatePiraguero_reducer,registerTracking_reducer} from "./Officer_reducer";
 
@@ -12,7 +12,8 @@ const rootReducers:any = combineReducers({
     address:address_reducer,
     piragueros:piragueros_reducer,
     updatePiraguero:updatePiraguero_reducer,
-    registerTracking: registerTracking_reducer 
+    registerTracking: registerTracking_reducer,
+    complaintId:get_complaint_reducer 
 });
 
 

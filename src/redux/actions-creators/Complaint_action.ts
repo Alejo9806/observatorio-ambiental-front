@@ -3,6 +3,27 @@ import { ActionTypeComplaint } from "../action-types";
 import { Dispatch } from "redux";
 import axios from "axios";
 
+
+const getComplaint = (id:string) =>{
+    return async (dispatch: Dispatch) => {
+        try {
+            await axios.get('http://localhost:4000/api/v1/denuncia/id/'+id)
+                .then(resp =>{
+                    const {data} = resp;
+                    dispatch({type:ActionTypeComplaint.GET_COMPLAINT_SUCCESS,payload:data});
+                })
+           
+        } catch (error:any) {
+            Swal.fire({
+                text:error.response.data.message,
+                icon:"error",
+            })
+            dispatch({type:ActionTypeComplaint.GET_COMPLAINT_FAIL,payload:error});
+        }
+    }
+}
+
+
 const getAllComplaint = (token:string) =>{
     return async (dispatch: Dispatch) => {
         try {
@@ -125,4 +146,4 @@ const updateComplaintStatus = (complaintStatus:any,token:string) => {
 }
 
 
-export {getAllComplaint,registerComplaint,getAddress,getApprovedComplaint,getEarringsComplaint,updateComplaintStatus,getRejectsComplaint}
+export {getComplaint,getAllComplaint,registerComplaint,getAddress,getApprovedComplaint,getEarringsComplaint,updateComplaintStatus,getRejectsComplaint}

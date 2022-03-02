@@ -20,6 +20,12 @@ interface UpdateComplaintState  {
     complaint:{},
 }
 
+const getComplaintIdState = {
+    error:false,
+    errMess:"",
+    isLoading:false,
+    complaint:{}
+}
 
 const getComplaintState = {
     error:false,
@@ -69,6 +75,20 @@ export const complaint_reducer = (state:ComplaintState = getComplaintState , act
             return{...state,error:false,errMess:"", isLoading: false,complaint: action.payload,};
      
         case ActionTypeComplaint.GET_ALL_COMPLAINT_FAIL: 
+            return{...state,error:true,isLoading: false ,errMess: action.payload, complaint:{}};
+
+        default:
+            break;
+    }
+    return state;
+};
+
+export const get_complaint_reducer = (state:ComplaintState = getComplaintIdState , action:Action) => {
+    switch (action.type) {
+        case ActionTypeComplaint.GET_COMPLAINT_SUCCESS:
+            return{...state,error:false,errMess:"", isLoading: false,complaint: action.payload,};
+     
+        case ActionTypeComplaint.GET_COMPLAINT_FAIL: 
             return{...state,error:true,isLoading: false ,errMess: action.payload, complaint:{}};
 
         default:

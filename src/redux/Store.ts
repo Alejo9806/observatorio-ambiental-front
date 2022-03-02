@@ -22,7 +22,7 @@ const encryptor = encryptTransform({
     key: "root",
     storage: storage,
     stateReconciler: autoMergeLevel2,
-    blacklist: ["complaint_reducer","registerComplaint","address","piragueros","updatePiraguero","registerTracking"],
+    blacklist: ["complaint_reducer","registerComplaint","address","piragueros","updatePiraguero","registerTracking","complaintId"],
     whitelist: ["loggin"],
     transforms: [encryptor]
   };

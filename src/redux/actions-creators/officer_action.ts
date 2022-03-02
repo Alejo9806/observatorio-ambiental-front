@@ -49,7 +49,7 @@ const updatePiragueroStatus = (status:any,token:string) =>{
 const registerTracking = (tracking:any,token:string,history:any) => {
     return async (dispatch:Dispatch) => {
         try {
-            await axios.put('http://5010-2800-484-9498-1901-99b-736f-4373-1071.ngrok.io/api/v1/denuncia/seguimiento',tracking,{headers:{'x-auth-token':token}})
+            await axios.post('http://localhost:4000/api/v1/denuncia/seguimiento',tracking,{headers:{'x-auth-token':token}})
                 .then(resp => {
                     const {data} = resp;
                     dispatch({type:ActionTypeOfficer.REGISTER_TRACKING_SUCCESS,payload:data});

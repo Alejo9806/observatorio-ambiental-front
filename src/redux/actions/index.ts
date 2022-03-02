@@ -1,5 +1,16 @@
 import { ActionTypeComplaint, ActionTypeLogin, ActionTypeOfficer } from "../action-types/index"
 
+interface GetComplaintSuccessAction {
+    type: ActionTypeComplaint.GET_COMPLAINT_SUCCESS,
+    payload: Object
+}
+
+interface GetComplaintFailAction {
+    type: ActionTypeComplaint.GET_COMPLAINT_FAIL,
+    payload: String
+}
+
+
 interface ComplaintSuccessAction {
     type: ActionTypeComplaint.GET_ALL_COMPLAINT_SUCCESS,
     payload: Object
@@ -121,4 +132,5 @@ interface RegisterTrackingFailAction {
 
 
 export type Action = ComplaintSuccessAction | ComplaintFailAction  | RegisterComplaintSuccessAction| RegisterComplaintFailAction | RegisterComplaintLoadingAction | LogginSuccessAction | LogginFailAction | LogginLoadingAction | LogoutSuccessAction | LogoutFailAction | GetAddressSuccessAction | GetAddressFailAction 
-    |LoggonSuccessAction | LoggonFailAction | LoggonLoadingAction | PiraguerosSuccessAction | PiraguerosFailAction | PiraguerosLoadingAction | UpdatePiraguerosSuccessAction | UpdatePiraguerosFailAction | UpdateComplaintSuccessAction | UpdateComplaintFailAction  | RegisterTrackingSuccessAction | RegisterTrackingFailAction;
+    |LoggonSuccessAction | LoggonFailAction | LoggonLoadingAction | PiraguerosSuccessAction | PiraguerosFailAction | PiraguerosLoadingAction | UpdatePiraguerosSuccessAction | UpdatePiraguerosFailAction | UpdateComplaintSuccessAction | UpdateComplaintFailAction  | RegisterTrackingSuccessAction | RegisterTrackingFailAction
+    | GetComplaintSuccessAction | GetComplaintFailAction;
