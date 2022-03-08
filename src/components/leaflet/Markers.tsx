@@ -58,8 +58,8 @@ const Markers: React.FC<Props> = (props) => {
    <Fragment>
       {getAllComplaintState.complaint.denuncias ? getAllComplaintState.complaint.denuncias.map((denuncia:any,index:number)=>(
         <Marker position={[denuncia.ubicacion.coordenadas.longitud, denuncia.ubicacion.coordenadas.latitud]} icon={IconWarning} key={index}>
-          <Popup>
-          <Card sx={{ maxWidth: 345 }}>
+          <Popup >
+          <Card sx={{ maxWidth: 345, overflowY: "scroll",height:500}}>
             {/* <CardMedia
               component="img"
               height="140"
@@ -123,6 +123,9 @@ const Markers: React.FC<Props> = (props) => {
                     </Typography>
                     <Typography variant="body2" color="text.secondary">
                       Encargado: {denuncia.seguimiento[denuncia.seguimiento.length - 1].encargado}
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                      Total de seguimientos realizados: {denuncia.seguimiento.length}
                     </Typography>
                   </div>:null
                 }

@@ -13,13 +13,15 @@ import SignUp from "../pages/SignUp";
 import Users from "../pages/Users";
 import FollowUp from "../pages/FollowUp";
 import ComplaintDetail from "../pages/ComplaintDetail";
+import Dashboard from "../pages/Dashboard";
 
 export class Routes extends Component {
     render() {
       return (
         <Fragment>
           <Switch>
-            <PublicRoute exact path="/" component={Map}></PublicRoute>
+            <PublicRoute exact path="/" component={Dashboard}></PublicRoute>
+            <PublicRoute exact path="/mapa" component={Map}></PublicRoute>
             <PublicRoute exact path="/ingresar" component={SignIn}></PublicRoute>
             <PublicRoute exact path="/registrarse" component={SignUp}></PublicRoute>
             <PrivateRoute exact path='/usuarios' component={Users}></PrivateRoute>

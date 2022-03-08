@@ -53,7 +53,7 @@ const registerTracking = (tracking:any,token:string,history:any) => {
                 .then(resp => {
                     const {data} = resp;
                     dispatch({type:ActionTypeOfficer.REGISTER_TRACKING_SUCCESS,payload:data});
-                    history.push("/")
+                    history.push("/mapa")
                 })          
         } catch (error:any) {
             Swal.fire({

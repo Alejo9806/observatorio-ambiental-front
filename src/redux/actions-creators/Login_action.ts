@@ -13,7 +13,7 @@ const signIn = (login:any,history:any) =>{
                     const {data} = resp;
                     console.log(data);
                     dispatch({type:ActionTypeLogin.LOGGIN_SUCCESS,payload:data});
-                    history.push("/")
+                    history.push("/mapa")
                 })        
         } catch (error:any) {
             console.log(error.response.data.msg)
@@ -35,7 +35,7 @@ const signUp = (logOn:any,history:any) => {
                     const {data} = resp;
                     console.log(data);
                     dispatch({type:ActionTypeLogin.LOGGON_SUCCESS,payload:data});
-                    history.push("/")
+                    history.push("/mapa")
                 }) 
         } catch (error:any) {
             console.log(error.response.data.msg)
@@ -61,7 +61,7 @@ const LogOutAuthAction = (history:any) =>{
     return async (dispatch:Dispatch) => {
         try {
             dispatch({type:ActionTypeLogin.LOGOUT_SUCCESS,payload:{}});
-            history.push("/")
+            history.push("/mapa")
         } catch (error:any) {
             console.log(error.response)
             dispatch({type:ActionTypeLogin.LOGOUT_FAIL,payload:{}});

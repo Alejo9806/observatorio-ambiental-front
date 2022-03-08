@@ -1,4 +1,4 @@
-import { ActionTypeComplaint, ActionTypeLogin, ActionTypeOfficer } from "../action-types/index"
+import { ActionTypeComplaint, ActionTypeLogin, ActionTypeOfficer,ActionTypeDashBoard } from "../action-types/index"
 
 interface GetComplaintSuccessAction {
     type: ActionTypeComplaint.GET_COMPLAINT_SUCCESS,
@@ -131,6 +131,22 @@ interface RegisterTrackingFailAction {
 }
 
 
+interface DashBoardSuccessAction {
+    type: ActionTypeDashBoard.DASHBOARD_SUCCESS,
+    payload:Array<any>
+}
+
+
+
+interface DashBoardFailAction {
+    type: ActionTypeDashBoard.DASHBOARD_FAIL,
+    payload:any
+}
+
+interface DashBoardLoadingAction {
+    type: ActionTypeDashBoard.DASHBOARD_LOADING,
+}
+
 export type Action = ComplaintSuccessAction | ComplaintFailAction  | RegisterComplaintSuccessAction| RegisterComplaintFailAction | RegisterComplaintLoadingAction | LogginSuccessAction | LogginFailAction | LogginLoadingAction | LogoutSuccessAction | LogoutFailAction | GetAddressSuccessAction | GetAddressFailAction 
     |LoggonSuccessAction | LoggonFailAction | LoggonLoadingAction | PiraguerosSuccessAction | PiraguerosFailAction | PiraguerosLoadingAction | UpdatePiraguerosSuccessAction | UpdatePiraguerosFailAction | UpdateComplaintSuccessAction | UpdateComplaintFailAction  | RegisterTrackingSuccessAction | RegisterTrackingFailAction
-    | GetComplaintSuccessAction | GetComplaintFailAction;
+    | GetComplaintSuccessAction | GetComplaintFailAction | DashBoardSuccessAction | DashBoardFailAction | DashBoardLoadingAction;
