@@ -25,9 +25,9 @@ import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 
 
 
-const pages = [{name:'Dashboard',link:'/'},{name:'Mapa',link:'/mapa'},{name:'Ingresar',link:'/ingresar'}, {name:'Registrarse',link:'/registrarse'}];
-const pagesIsLoggin = [{name:'Dashboard',link:'/'},{name:'Mapa',link:'/mapa'}];
-const pagesIslogginRoot = [{name:'Dashboard',link:'/'},{name:'Mapa',link:'/mapa'},{name:'Usuarios',link:'/usuarios'},{name:'Administrar denuncias',link:'/denuncias'}]
+const pages = [{name:'Indicadores',link:'/'},{name:'Mapa',link:'/mapa'},{name:'Ingresar',link:'/ingresar'}, {name:'Registrarse',link:'/registrarse'}];
+const pagesIsLoggin = [{name:'Indicadores',link:'/'},{name:'Mapa',link:'/mapa'}];
+const pagesIslogginRoot = [{name:'Indicadores',link:'/'},{name:'Mapa',link:'/mapa'},{name:'Usuarios',link:'/usuarios'},{name:'Administrar denuncias',link:'/denuncias'}]
 const settings = ['Logout'];
 
 const darkTheme = createTheme({

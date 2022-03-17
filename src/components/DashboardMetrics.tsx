@@ -51,14 +51,14 @@ const DashboardMetrics: React.FC<Props> = (props) => {
                 label: '# de denuncias',
                 data: [statitics.dashboard.length !== 0 ? statitics.dashboard[0].aprobadas : 0, statitics.dashboard.length !== 0 ?  statitics.dashboard[0].rechazadas : 0, statitics.dashboard.length !== 0 ? statitics.dashboard[0].pendientes : 0],
                 backgroundColor: [
-                    'rgba(255, 99, 132, 0.2)',
-                    'rgba(54, 162, 235, 0.2)',
-                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(233, 10, 10, 0.5)',
+                    'rgba(9, 80, 242, 0.5)',
+                    'rgba(6, 137, 28, 0.5)',
                 ],
                 borderColor: [
-                    'rgba(255, 99, 132, 1)',
-                    'rgba(54, 162, 235, 1)',
-                    'rgba(255, 206, 86, 1)',
+                    'rgba(233, 10, 10, 1)',
+                    'rgba(9, 80, 242, 1)',
+                    'rgba(6, 137, 28, 1)',
                 ],
                 borderWidth: 1,
             },
@@ -72,14 +72,16 @@ const DashboardMetrics: React.FC<Props> = (props) => {
                 label: '# de denuncias',
                 data: [statitics.dashboard.length !== 0 ? statitics.dashboard[1].funcionarios : 0, statitics.dashboard.length !== 0 ?  statitics.dashboard[1].piraguero : 0, statitics.dashboard.length !== 0 ? statitics.dashboard[1].pendiente : 0, statitics.dashboard.length !== 0 ? statitics.dashboard[1].rechazado : 0],
                 backgroundColor: [
-                    'rgba(255, 99, 132, 0.2)',
-                    'rgba(54, 162, 235, 0.2)',
-                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(233, 10, 10, 0.5)',
+                    'rgba(9, 80, 242, 0.5)',
+                    'rgba(6, 137, 28, 0.5)',
+                    'rgba(241, 239, 65, 0.5)'
                 ],
                 borderColor: [
-                    'rgba(255, 99, 132, 1)',
-                    'rgba(54, 162, 235, 1)',
-                    'rgba(255, 206, 86, 1)',
+                    'rgba(233, 10, 10,1)',
+                    'rgba(9, 80, 242, 1)',
+                    'rgba(6, 137, 28, 1)',
+                    'rgba(241, 239, 65, 1)'
                 ],
                 borderWidth: 1,
             },
@@ -91,16 +93,16 @@ const DashboardMetrics: React.FC<Props> = (props) => {
         datasets: [
             {
                 label: '# de denuncias',
-                data: [statitics.dashboard.length !== 0 ? statitics.dashboard[2].AMBIENTAL : 0, statitics.dashboard.length !== 0 ?  statitics.dashboard[2].LEGAL : 0, statitics.dashboard.length !== 0 ? statitics.dashboard[1].pendiente : 0],
+                data: [statitics.dashboard.length !== 0 ? statitics.dashboard[2].AMBIENTAL : 0, statitics.dashboard.length !== 0 ?  statitics.dashboard[2].LEGAL : 0, statitics.dashboard.length !== 0 ? statitics.dashboard[1].SOCIAL !== undefined  : 0 ?  statitics.dashboard[1].SOCIAL : 0],
                 backgroundColor: [
-                    'rgba(255, 99, 132, 0.2)',
-                    'rgba(54, 162, 235, 0.2)',
-                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(233, 10, 10, 0.5)',
+                    'rgba(9, 80, 242, 0.5)',
+                    'rgba(6, 137, 28, 0.5)',
                 ],
                 borderColor: [
-                    'rgba(255, 99, 132, 1)',
-                    'rgba(54, 162, 235, 1)',
-                    'rgba(255, 206, 86, 1)',
+                    'rgba(233, 10, 10, 1)',
+                    'rgba(9, 80, 242, 1)',
+                    'rgba(6, 137, 28, 1)',
                 ],
                 borderWidth: 1,
             },
@@ -114,14 +116,14 @@ const DashboardMetrics: React.FC<Props> = (props) => {
                 label: '# de denuncias',
                 data: [statitics.dashboard.length !== 0 ? statitics.dashboard[3].SEGUIMIENTO : 0, statitics.dashboard.length !== 0 ?  statitics.dashboard[3].SOLUCION : 0, statitics.dashboard.length !== 0 ? statitics.dashboard[3].CIERRE : 0],
                 backgroundColor: [
-                    'rgba(255, 99, 132, 0.2)',
-                    'rgba(54, 162, 235, 0.2)',
-                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(233, 10, 10, 0.5)',
+                    'rgba(9, 80, 242, 0.5)',
+                    'rgba(6, 137, 28, 0.5)',
                 ],
                 borderColor: [
-                    'rgba(255, 99, 132, 1)',
-                    'rgba(54, 162, 235, 1)',
-                    'rgba(255, 206, 86, 1)',
+                    'rgba(233, 10, 10, 1)',
+                    'rgba(9, 80, 242, 1)',
+                    'rgba(6, 137, 28, 1)',
                 ],
                 borderWidth: 1,
             },
@@ -133,20 +135,20 @@ const DashboardMetrics: React.FC<Props> = (props) => {
         labels,
         datasets: [
           {
-            label: 'Ciudades',
+            label: 'Cantidad de denuncias',
             data: labels.map((label) => {
                 return statitics.dashboard.length !== 0 ? statitics.dashboard[4][label] : 0 
             }),
-            backgroundColor: 'rgba(255, 99, 132, 0.5)',
+            backgroundColor: 'rgba(233, 10, 10, 0.5)',
           },
         ],
       };
   return (
     <div>
         <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-            <Typography gutterBottom variant="h4" component="div">DASHBOARD</Typography>
+            <Typography gutterBottom variant="h4" component="div">INDICADORES</Typography>
             <br />
-            <Typography gutterBottom variant="body2" component="div">Estadisticas reales de los procesos realizados que realizamos dentro del equipo de ALMAVI, para el sistema de observatorio ambiental los piraguas. </Typography>
+            <Typography gutterBottom variant="body2" component="div">Estadisticas reales de los procesos realizados dentro del equipo de ALMAVI. </Typography>
             <Grid container spacing={3} sx={{marginTop:3}}>
                 <Grid item xs={12} md={8} lg={8}>
                 <Typography gutterBottom variant="h4" component="div">Denuncias</Typography>
@@ -190,7 +192,7 @@ const DashboardMetrics: React.FC<Props> = (props) => {
                         </Paper>
                 </Grid>
                 <Grid item xs={12} md={8} lg={8}>
-                    <Typography gutterBottom variant="h4" component="div">Clases de Seguimientos</Typography>
+                    <Typography gutterBottom variant="h4" component="div">Tipos de seguimientos aplicados a las denuncias</Typography>
                         <Paper
                             sx={{
                             p: 2,
