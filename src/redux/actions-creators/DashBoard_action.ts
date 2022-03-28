@@ -9,23 +9,23 @@ const getStatistics = () =>{
         // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
         let statistics = <any>[]
         try {
-            await axios.get('http://localhost:4000/api/v1/dashboard/denunciasEstado')
+            await axios.get('https://radiant-earth-57283.herokuapp.com/api/v1/dashboard/denunciasEstado')
                 .then( async (resp)  => {
                     const {data} = resp;
                     statistics.push(data.denuncias);
-                    await axios.get('http://localhost:4000/api/v1/dashboard/usuariosEstado')
+                    await axios.get('https://radiant-earth-57283.herokuapp.com/api/v1/dashboard/usuariosEstado')
                         .then(async (resp) =>{
                             const {data} = resp;
                             statistics.push(data.usuarios);
-                            await axios.get('http://localhost:4000/api/v1/dashboard/tiposeguimiento')
+                            await axios.get('https://radiant-earth-57283.herokuapp.com/api/v1/dashboard/tiposeguimiento')
                                 .then(async (resp) =>{
                                     const {data} = resp;
                                     statistics.push(data.tipoSeguimiento);
-                                    await axios.get('http://localhost:4000/api/v1/dashboard/claseseguimiento')
+                                    await axios.get('https://radiant-earth-57283.herokuapp.com/api/v1/dashboard/claseseguimiento')
                                         .then(async (resp) =>{
                                             const {data} = resp;
                                             statistics.push(data.claseSeguimiento);
-                                            await axios.get('http://localhost:4000/api/v1/dashboard/ciudadesEstado')
+                                            await axios.get('https://radiant-earth-57283.herokuapp.com/api/v1/dashboard/ciudadesEstado')
                                                 .then(resp =>{
                                                     const {data} = resp;
                                                     statistics.push(data.ciudades);

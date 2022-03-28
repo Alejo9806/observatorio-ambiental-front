@@ -7,7 +7,7 @@ import axios from "axios";
 const getComplaint = (id:string) =>{
     return async (dispatch: Dispatch) => {
         try {
-            await axios.get('http://localhost:4000/api/v1/denuncia/id/'+id)
+            await axios.get('https://radiant-earth-57283.herokuapp.com/api/v1/denuncia/id/'+id)
                 .then(resp =>{
                     const {data} = resp;
                     dispatch({type:ActionTypeComplaint.GET_COMPLAINT_SUCCESS,payload:data});
@@ -27,7 +27,7 @@ const getComplaint = (id:string) =>{
 const getAllComplaint = (token:string) =>{
     return async (dispatch: Dispatch) => {
         try {
-            await axios.get('http://localhost:4000/api/v1/denuncias',{headers:{'x-auth-token':token}})
+            await axios.get('https://radiant-earth-57283.herokuapp.com/api/v1/denuncias',{headers:{'x-auth-token':token}})
                 .then(resp =>{
                     const {data} = resp;
                     dispatch({type:ActionTypeComplaint.GET_ALL_COMPLAINT_SUCCESS,payload:data});
@@ -42,7 +42,7 @@ const getAllComplaint = (token:string) =>{
 const getApprovedComplaint = () =>{
     return async (dispatch: Dispatch) => {
         try {
-            await axios.get('http://localhost:4000/api/v1/denuncias/aprobadas')
+            await axios.get('https://radiant-earth-57283.herokuapp.com/api/v1/denuncias/aprobadas')
                 .then(resp =>{
                     const {data} = resp;
                     console.log(data);
@@ -58,7 +58,7 @@ const getApprovedComplaint = () =>{
 const getEarringsComplaint = (token:string) =>{
     return async (dispatch: Dispatch) => {
         try {
-            await axios.get('http://localhost:4000/api/v1/denuncias/pendientes',{headers:{'x-auth-token':token}})
+            await axios.get('https://radiant-earth-57283.herokuapp.com/api/v1/denuncias/pendientes',{headers:{'x-auth-token':token}})
                 .then(resp =>{
                     const {data} = resp;
                     dispatch({type:ActionTypeComplaint.GET_ALL_COMPLAINT_SUCCESS,payload:data});
@@ -73,7 +73,7 @@ const getEarringsComplaint = (token:string) =>{
 const getRejectsComplaint = (token:string) =>{
     return async (dispatch: Dispatch) => {
         try {
-            await axios.get('http://localhost:4000/api/v1/denuncias/rechazadas',{headers:{'x-auth-token':token}})
+            await axios.get('https://radiant-earth-57283.herokuapp.com/api/v1/denuncias/rechazadas',{headers:{'x-auth-token':token}})
                 .then(resp =>{
                     const {data} = resp;
                     dispatch({type:ActionTypeComplaint.GET_ALL_COMPLAINT_SUCCESS,payload:data});
@@ -90,7 +90,7 @@ const registerComplaint = (complaintState:any,token:string) => {
         dispatch(registerComplaintActionLoading());
         try {
             console.log(complaintState,token)
-            await axios.post('http://localhost:4000/api/v1/denuncia',complaintState,{headers:{'x-auth-token':token}})
+            await axios.post('https://radiant-earth-57283.herokuapp.com/api/v1/denuncia',complaintState,{headers:{'x-auth-token':token}})
                 .then(resp => {
                     const {data} = resp;
                     dispatch({type:ActionTypeComplaint.REGISTER_COMPLAINT_SUCCESS,payload:data});
@@ -130,7 +130,7 @@ const getAddress = (lat:number,lon:number) => {
 const updateComplaintStatus = (complaintStatus:any,token:string) => {
     return async (dispatch:Dispatch) => {
         try {
-            await axios.put('http://localhost:4000/api/v1/denuncia/updatestatus',complaintStatus,{headers:{'x-auth-token':token}})
+            await axios.put('https://radiant-earth-57283.herokuapp.com/api/v1/denuncia/updatestatus',complaintStatus,{headers:{'x-auth-token':token}})
                 .then(resp => {
                     const {data} = resp;
                     dispatch({type:ActionTypeComplaint.REGISTER_COMPLAINT_SUCCESS,payload:data});

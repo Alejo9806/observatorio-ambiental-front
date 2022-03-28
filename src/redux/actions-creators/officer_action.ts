@@ -7,7 +7,7 @@ const getPiraguerosStatus = (status:string,token:string) =>{
     return async (dispatch: Dispatch) => {
         dispatch(getPiraguerosStatusLoading());
         try {
-            await axios.get('http://localhost:4000/api/v1/piragueros/'+status,{headers:{'x-auth-token':token}})
+            await axios.get('https://radiant-earth-57283.herokuapp.com/api/v1/piragueros/'+status,{headers:{'x-auth-token':token}})
                 .then(resp =>{
                     const {data} = resp;
                     dispatch({type:ActionTypeOfficer.GET_PIRAGUEROS_SUCCESS,payload:data});
@@ -30,7 +30,7 @@ const getPiraguerosStatusLoading = () =>({
 const updatePiragueroStatus = (status:any,token:string) =>{
     return async (dispatch: Dispatch) => {
         try {
-            await axios.put('http://localhost:4000/api/v1/piraguero/updatestatus',status,{headers:{'x-auth-token':token}})
+            await axios.put('https://radiant-earth-57283.herokuapp.com/api/v1/piraguero/updatestatus',status,{headers:{'x-auth-token':token}})
                 .then(resp =>{
                     const {data} = resp;
                     dispatch({type:ActionTypeOfficer.UPDATE_PIRAGUERO_SUCCESS,payload:data});
@@ -49,7 +49,7 @@ const updatePiragueroStatus = (status:any,token:string) =>{
 const registerTracking = (tracking:any,token:string,history:any) => {
     return async (dispatch:Dispatch) => {
         try {
-            await axios.post('http://localhost:4000/api/v1/denuncia/seguimiento',tracking,{headers:{'x-auth-token':token}})
+            await axios.post('https://radiant-earth-57283.herokuapp.com/api/v1/denuncia/seguimiento',tracking,{headers:{'x-auth-token':token}})
                 .then(resp => {
                     const {data} = resp;
                     dispatch({type:ActionTypeOfficer.REGISTER_TRACKING_SUCCESS,payload:data});

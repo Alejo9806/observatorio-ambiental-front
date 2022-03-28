@@ -8,7 +8,7 @@ const signIn = (login:any,history:any) =>{
         dispatch(signInActionLoading());
         try {
             console.log(login)
-            await axios.post('http://localhost:4000/api/v1/piraguero/loggin',login)
+            await axios.post('https://radiant-earth-57283.herokuapp.com/api/v1/piraguero/loggin',login)
                 .then(resp => {
                     const {data} = resp;
                     console.log(data);
@@ -30,7 +30,7 @@ const signUp = (logOn:any,history:any) => {
     return async (dispatch:Dispatch) =>{
         dispatch(signUpActionLoading());
         try {console.log(logOn)
-            await axios.post('http://localhost:4000/api/v1/piraguero',logOn)
+            await axios.post('https://radiant-earth-57283.herokuapp.com/api/v1/piraguero',logOn)
                 .then(resp => {
                     const {data} = resp;
                     console.log(data);
