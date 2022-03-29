@@ -87,7 +87,7 @@ const ComplaintRegister: React.FC<Props> = (props) => {
                         altitud:""
                     },
                     departamento:address.address.address.state,
-                    ciudad:address.address.address.county
+                    ciudad: address.address.address.county  ? address.address.address.county : address.address.address.city
                 },
                 denuncia:{
                     titulo:complaint.titulo,
